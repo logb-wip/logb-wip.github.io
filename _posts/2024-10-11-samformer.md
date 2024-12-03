@@ -70,14 +70,15 @@ In this blog post, we focus on ***SAMformer***, a transformer-based architecture
 "On va droit au but, allez voir le papier pour plus de detail." (TO DO). 
 Time series forecasting consists of analyzing time series data to predict future trends based on historical information. It has many applications in real-world scenarios such as forecasting ECG recordings to anticipate cardiac arrhythmia, predicting electricity consumption to match future demand, or predicting stock market prices (an exciting topic in times of inflation). Multivariate long-term forecasting is notoriously challenging due to feature correlations and long-term temporal dependencies in time series. And transformers fail at it [are transformers really effective bla bla].
 
-fig: meme
+{% include figure.liquid path="assets/img/blog_samformer/meme_dogs.png" class="img-fluid rounded z-depth-0" zoomable=true %}
 
 ## SAMformer ⚔️
 
 ### Trainability Issues of the Attention
 To identify the problem, we simplify the original Transformer [Vaswani et al.] to only keep the key components.
 
-fig: sharpeness + entropy
+{% include figure.liquid path="assets/img/blog_samformer/sharpness_entropy_collapse_sam.png" class="img-fluid rounded z-depth-0" zoomable=true %}
+
 
 ### SAM to the rescue
 There are two possible solutions:
@@ -151,7 +152,7 @@ class SAMFormerArchitecture(nn.Module):
 ## Future Work
 Sigma reparam bla bla (citer Sinkformer + rank and signal propagation work on attention (attention is not all u need + signal propagation in transformer).
 
-fig: nuclear_norm 
+{% include figure.liquid path="assets/img/blog_samformer/nuclear_norm.png" class="img-fluid rounded z-depth-0" zoomable=true %}
 
 ## Conclusion
 ## <a id="acknowledgments"></a>Acknowledgments 🙏🏾
