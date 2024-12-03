@@ -31,8 +31,8 @@ toc:
     # subsections:
     #   - name: Example Child Subsection 1
     #   - name: Example Child Subsection 2
-  - name: Trainability Issues due to the Attention 🔎
-  - name: SAMformer in-depth ⚔️
+  - name: Motivation 🔎
+  - name: SAMformer ⚔️
   - name: Getting your hands dirty 🖥️
   - name: Acknowledgments 🙏🏾
 
@@ -58,22 +58,16 @@ _styles: >
 ## <a id="goal"></a>Goal 🚀
 > Fear not, those who delved into the maths of the kernel trick, for its advent in deep learning is coming.
 
-In this blog post, we focus on ***SAMformer***, a transformer-based architecture for time series forecasting proposed in [*SAMformer: Unlocking the Potential of Transformers in Time Series Forecasting with Sharpness-Aware Minimization and Channel-Wise Attention*](https://arxiv.org/pdf/2402.10198) <d-cite key="mairal2016endtoend"></d-cite>, one of Ambroise's recent paper. SAMformer combines Sharpness-Aware Minimization (SAM) <d-cite key="mairal2016endtoend"></d-cite> and channel-wise attention to obtain a light-weight SOTA model with improved robustness and signal propagation compared to its competitors. CKN opened a new line of research in deep learning by demonstrating the benefits of the kernel trick for deep convolutional representations. This blog aims to provide a high-level view of the CKN architecture while explaining how to implement it from scratch without relying on modern deep-learning frameworks. For a more complete picture from the mathematical side, we invite the reader to refer to the original paper
+In this blog post, we focus on ***SAMformer***, a transformer-based architecture for time series forecasting proposed in [*SAMformer: Unlocking the Potential of Transformers in Time Series Forecasting with Sharpness-Aware Minimization and Channel-Wise Attention*](https://arxiv.org/pdf/2402.10198) <d-cite key="mairal2016endtoend"></d-cite>, one of Ambroise's recent paper. SAMformer combines Sharpness-Aware Minimization (SAM) <d-cite key="mairal2016endtoend"></d-cite> and channel-wise attention to obtain a light-weight SOTA model with improved robustness and signal propagation compared to its competitors. This blog aims to provide a high-level view of the motivation behind SAMformer while explaining how to implement it. We invite the reader to refer to the original paper for more details.
 
-## Trainability Issues due to the Attention 🔎
-Before diving into the CKN itself, we briefly recall what the *kernel trick* stands for. TODO
+## Motivation 🔎
+Time series forecasting consists of analyzing time series data to predict future trends based on historical information. It has many applications in real-world scenarios such as forecasting ECG recording to anticipate cardiac arrhythmia, predicting electricity consumption to match future demand, or predicting stock market prices (a particularly interesting topic in times of inflation). Multivariate long-term forecasting is notoriously challenging due to feature correlations and long-term temporal dependencies in time series
 
-$$
-\begin{equation*}
-K(\mathbf{x}, \mathbf{x}') = \langle \varphi(\mathbf{x}), \varphi(\mathbf{x}')\rangle_{\mathcal{H}}
-\end{equation*}
-$$
 
-## SAMformer in-depth ⚔️
-Now that everyone has a clear head regarding the kernel trick, we are prepared to introduce the so-called ***Convolutional Kernel Network***. The main idea behind the CKN is to leverage the kernel trick to represent local neighborhoods of images. In this section, we explain how the authors build Convolutional Kernel layers that can be stacked into a multi-layer CKN.
+### Failure of Transformers
+### Trainability Issues of the Attention
 
-### Motivation: representing local image neighborhoods
-The CKN architecture is a type of convolutional neural network that couples the prediction task with representation learning.
+## SAMformer ⚔️
 
 ## Getting your hands dirty 🖥️
 In this section, we discuss the implementation of SAMformer. 
@@ -82,13 +76,15 @@ In this section, we discuss the implementation of SAMformer.
 The original implementation of the SAMformer architecture makes use of modern deep learning frameworks such as `PyTorch` or `TensorFlow` and can be found [here](https://github.com/romilbert/samformer).
 
 ### Main Components
-We provide below the main command lines of the (PyTorch) implementation of SAMformer:
-- RevIN normalization
-- Channel-wise attention
-- Residual connection
-- Linear forecasting
-- RevIN denormalization
+As can be seen below, SAMformer consists of 5 layers:
 
+{% include figure.liquid path="assets/img/blog_samformer/samformer_arch.png" class="img-fluid rounded z-depth-0" zoomable=true %}
+
+It leads to a shallow transformer with a single head and a single encoder that can be trained with SAM <d-cite key="mairal2016endtoend"></d-cite>. 
+
+We provide a snippet of SAMformer (few) code lines below for the interested reader. 
+
+{% details SAMformer Implementation %}
 ```python
 import torch.nn as nn
 import torch.nn.functional as F
@@ -124,6 +120,7 @@ class SAMFormerArchitecture(nn.Module):
 
         return out
 ```
+{% enddetails%}
 
 ## <a id="acknowledgments"></a>Acknowledgments 🙏🏾
 
