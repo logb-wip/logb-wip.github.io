@@ -103,7 +103,7 @@ The original implementation of the SAMformer architecture makes use of modern de
 ### Main Components
 As can be seen below, SAMformer consists of 5 layers:
 
-{% include figure.liquid path="assets/img/blog_samformer/samformer_arch.png" class="img-fluid rounded z-depth-0" zoomable=true %}
+{% include figure.liquid path="assets/img/blog_samformer/samformer_arch.png" class="img-fluid rounded z-depth-0" zoomable=true style="width: 50%;" %}
 
 It leads to a shallow transformer with a single head and a single encoder that can be trained with SAM <d-cite key="mairal2016endtoend"></d-cite>. 
 
