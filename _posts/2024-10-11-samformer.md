@@ -58,7 +58,7 @@ _styles: >
 ## <a id="goal"></a>Goal 🚀
 > Fear not, those who delved into the maths of the kernel trick, for its advent in deep learning is coming.
 
-In this blog post, we focus on ***SAMformer***, a transformer-based architecture for time series forecasting proposed in [*SAMformer: Unlocking the Potential of Transformers in Time Series Forecasting with Sharpness-Aware Minimization and Channel-Wise Attention*](https://arxiv.org/pdf/2402.10198) <d-cite key="mairal2016endtoend"></d-cite>. SAMformer combines Sharpness-Aware Minimization (SAM) <d-cite key="mairal2016endtoend"></d-cite> and channel-wise attention to obtain a light-weight SOTA model with improved robustness and signal propagation compared to its competitors. CKN opened a new line of research in deep learning by demonstrating the benefits of the kernel trick for deep convolutional representations. This blog aims to provide a high-level view of the CKN architecture while explaining how to implement it from scratch without relying on modern deep-learning frameworks. For a more complete picture from the mathematical side, we invite the reader to refer to the original paper
+In this blog post, we focus on ***SAMformer***, a transformer-based architecture for time series forecasting proposed in [*SAMformer: Unlocking the Potential of Transformers in Time Series Forecasting with Sharpness-Aware Minimization and Channel-Wise Attention*](https://arxiv.org/pdf/2402.10198) <d-cite key="mairal2016endtoend"></d-cite>, one of Ambroise's recent paper. SAMformer combines Sharpness-Aware Minimization (SAM) <d-cite key="mairal2016endtoend"></d-cite> and channel-wise attention to obtain a light-weight SOTA model with improved robustness and signal propagation compared to its competitors. CKN opened a new line of research in deep learning by demonstrating the benefits of the kernel trick for deep convolutional representations. This blog aims to provide a high-level view of the CKN architecture while explaining how to implement it from scratch without relying on modern deep-learning frameworks. For a more complete picture from the mathematical side, we invite the reader to refer to the original paper
 
 ## Trainability Issues due to the Attention 🔎
 Before diving into the CKN itself, we briefly recall what the *kernel trick* stands for. TODO
@@ -83,14 +83,50 @@ The original implementation of the SAMformer architecture makes use of modern de
 
 ### Main Components
 We provide below the main command lines of the (PyTorch) implementation of SAMformer:
-- RevIN normalizationon
+- RevIN normalization
 - Channel-wise attention
 - Residual connection
 - Linear forecasting
 - RevIN denormalization
 
+```python
+import torch.nn as nn
+import torch.nn.functional as F
+
+class SAMFormerArchitecture(nn.Module):
+    def __init__(self, num_channels, seq_len, hid_dim, pred_horizon):
+        super().__init__()
+        self.revin = RevIN(num_features=num_channels)
+        self.compute_keys = nn.Linear(seq_len, hid_dim)
+        self.compute_queries = nn.Linear(seq_len, hid_dim)
+        self.compute_values = nn.Linear(seq_len, seq_len)
+        self.linear_forecaster = nn.Linear(seq_len, pred_horizon)
+
+    def forward(self, x):
+
+        # RevIN Normalization
+        x_norm = self.revin(x.transpose(1, 2), mode='norm').transpose(1, 2) # (n, D, L)
+
+        # Channel-Wise Attention
+        queries = self.compute_queries(x_norm) # (n, D, hid_dim)
+        keys = self.compute_keys(x_norm) # (n, D, hid_dim)
+        values = self.compute_values(x_norm) # (n, D, L)
+        att_score = F.scaled_dot_product_attention(queries, keys, values) # (n, D, L)
+
+        # Residual Connection
+        out = x_norm + att_score # (n, D, L)
+
+        # Linear Forecasting
+        out = self.linear_forecaster(out) # (n, D, H)
+
+        # RevIN Denormalization
+        out = self.revin(out.transpose(1, 2), mode='denorm').transpose(1, 2) # (n, D, H)
+
+        return out
+```
+
 ## <a id="acknowledgments"></a>Acknowledgments 🙏🏾
 
-We would especially like to thank Prof. [Julien Mairal](https://lear.inrialpes.fr/people/mairal/) for taking the time to proofread this blog post. This is all the more important to us as he is the author of the [CKN paper](https://proceedings.neurips.cc/paper_files/paper/2016/file/fc8001f834f6a5f0561080d134d53d29-Paper.pdf). We are very grateful to the professors of the [Kernel Methods course](https://mva-kernel-methods.github.io/course-2023-2024/) of the [MVA Master](https://www.master-mva.com/): Prof. [Julien Mairal](https://lear.inrialpes.fr/people/mairal/), Prof. [Michel Arbel](https://michaelarbel.github.io/), Prof. [Jean-Philippe Vert](https://jpvert.github.io/) and Prof. [Alessandro Rudi](https://www.di.ens.fr/~rudi/) for introducing us to this field. 
+We thank TBD for taking the time to proofread this blog post. We thank Ambroise's co-authors: Romain Ilbert, Vasilii Feofanov, Aladin Virmaux, Giuseppe Paolo, Themis Palpanas, and Ievgen Redko. 
 
 For any further questions, please feel free to leave a comment or contact us by mail!
