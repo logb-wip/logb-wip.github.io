@@ -2,7 +2,7 @@
 layout: distill
 title: SAMformer
 description: TODO # Deep Convolutional Representations in RKHS
-tags: [transformers, deep learning, maths, code]
+tags: [transformers, deep learning, time series forecasting, maths, code]
 giscus_comments: true
 date: 2024-10-11
 featured: false
@@ -11,7 +11,7 @@ authors:
   - name: Ambroise Odonnat
     url: "https://ambroiseodt.github.io/"
     affiliations:
-      name: Huawei Noah's Ark Lab
+      name: Huawei Noah's Ark Lab & Inria
   - name: Oussama Zekri
     url: "https://oussamazekri.fr"
     affiliations:
@@ -58,7 +58,7 @@ _styles: >
 ## <a id="goal"></a>Goal 🚀
 > Fear not, those who delved into the maths of the kernel trick, for its advent in deep learning is coming.
 
-In this blog post, we focus on the ***Convolutional Kernel Network*** (CKN) architecture proposed in [*End-to-End Kernel Learning with Supervised Convolutional Kernel Networks*](https://proceedings.neurips.cc/paper_files/paper/2016/file/fc8001f834f6a5f0561080d134d53d29-Paper.pdf) <d-cite key="mairal2016endtoend"></d-cite> and present its guiding principles and main components. TODO 
+In this blog post, we focus on ***SAMformer***, a transformer-based architecture for time series forecasting proposed in [*SAMformer: Unlocking the Potential of Transformers in Time Series Forecasting with Sharpness-Aware Minimization and Channel-Wise Attention*](https://arxiv.org/pdf/2402.10198) <d-cite key="mairal2016endtoend"></d-cite>. SAMformer combines Sharpness-Aware Minimization (SAM) <d-cite key="mairal2016endtoend"></d-cite> and channel-wise attention to obtain a light-weight SOTA model with improved robustness and signal propagation compared to its competitors. CKN opened a new line of research in deep learning by demonstrating the benefits of the kernel trick for deep convolutional representations. This blog aims to provide a high-level view of the CKN architecture while explaining how to implement it from scratch without relying on modern deep-learning frameworks. For a more complete picture from the mathematical side, we invite the reader to refer to the original paper
 
 ## Trainability Issues due to the Attention 🔎
 Before diving into the CKN itself, we briefly recall what the *kernel trick* stands for. TODO
@@ -76,18 +76,18 @@ Now that everyone has a clear head regarding the kernel trick, we are prepared t
 The CKN architecture is a type of convolutional neural network that couples the prediction task with representation learning.
 
 ## Getting your hands dirty 🖥️
-In this section, we discuss the implementation of the CKN architecture and show how to reimplement it from scratch. 
+In this section, we discuss the implementation of SAMformer. 
 
-### Modern Implementation
-The original implementation of the CKN architecture makes use of modern deep learning frameworks such as `PyTorch`, `TensorFlow` or `JAX` and can be found [here](https://github.com/claying/CKN-Pytorch-image). We recommend using it if the performance is at stake.
+### Overview
+The original implementation of the SAMformer architecture makes use of modern deep learning frameworks such as `PyTorch` or `TensorFlow` and can be found [here](https://github.com/romilbert/samformer).
 
-#### Autodiff
-
-Automatic differentiation (autodiff) is a well-known algorithm that is absolutely essential in deep learning.
-
-<div style="display: flex; justify-content: center;"><blockquote class="twitter-tweet"><p lang="en" dir="ltr">Backprop in neural networks is reverse mode auto-diff applied to a simple linear computational graph. The simplicity of the resulting algorithm somehow overshadows the power and non-triviality of applying auto-diff to complex (e.g. recursive) graphs. <a href="https://t.co/5op8P7oYrE">https://t.co/5op8P7oYrE</a> <a href="https://t.co/ETafufgGqa">pic.twitter.com/ETafufgGqa</a></p>&mdash; Gabriel Peyré (@gabrielpeyre) <a href="https://twitter.com/gabrielpeyre/status/956932467092574213?ref_src=twsrc%5Etfw">January 26, 2018</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></div>
-
-For implementation from scratch details of autodiff, see this really simple [blog post](https://e-dorigatti.github.io/math/deep%20learning/2020/04/07/autodiff.html) from [Emilio Dorigatti](https://e-dorigatti.github.io/)'s website. But let's go back to our CKN now.
+### Main Components
+We provide below the main command lines of the (PyTorch) implementation of SAMformer:
+- RevIN normalizationon
+- Channel-wise attention
+- Residual connection
+- Linear forecasting
+- RevIN denormalization
 
 ## <a id="acknowledgments"></a>Acknowledgments 🙏🏾
 
