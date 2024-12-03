@@ -101,7 +101,8 @@ class SAMFormerArchitecture(nn.Module):
     def forward(self, x):
 
         # RevIN Normalization
-        x_norm = self.revin(x.transpose(1, 2), mode='norm').transpose(1, 2) # (n, D, L)
+        x_norm = self.revin(x.transpose(1, 2), mode='norm') 
+        x_norm = x_norm.transpose(1, 2) # (n, D, L)
 
         # Channel-Wise Attention
         queries = self.compute_queries(x_norm) # (n, D, hid_dim)
@@ -116,7 +117,8 @@ class SAMFormerArchitecture(nn.Module):
         out = self.linear_forecaster(out) # (n, D, H)
 
         # RevIN Denormalization
-        out = self.revin(out.transpose(1, 2), mode='denorm').transpose(1, 2) # (n, D, H)
+        out = self.revin(out.transpose(1, 2), mode='denorm')
+        out = out.transpose(1, 2) # (n, D, H)
 
         return out
 ```
