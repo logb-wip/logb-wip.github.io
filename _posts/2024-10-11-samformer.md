@@ -15,7 +15,7 @@ authors:
   - name: Oussama Zekri
     url: "https://oussamazekri.fr"
     affiliations:
-      name: ENS Paris-Saclay
+      name: ENS Paris-Saclay & Imperial
 
 bibliography: 2024-10-11-samformer.bib
 
@@ -58,13 +58,13 @@ _styles: >
 ## <a id="goal"></a>Goal 🚀
 > Fear not, those who delved into the maths of the kernel trick, for its advent in deep learning is coming.
 
-In this blog post, we focus on ***SAMformer***, a transformer-based architecture for time series forecasting proposed in [*SAMformer: Unlocking the Potential of Transformers in Time Series Forecasting with Sharpness-Aware Minimization and Channel-Wise Attention*](https://arxiv.org/pdf/2402.10198) <d-cite key="mairal2016endtoend"></d-cite>, one of Ambroise's recent paper. SAMformer combines Sharpness-Aware Minimization (SAM) <d-cite key="mairal2016endtoend"></d-cite> and channel-wise attention to obtain a light-weight SOTA model with improved robustness and signal propagation compared to its competitors. This blog aims to provide a high-level view of the motivation behind SAMformer while explaining how to implement it. We invite the reader to refer to the original paper for more details.
+In this blog post, we focus on ***SAMformer***, a transformer-based architecture for time series forecasting proposed in [*SAMformer: Unlocking the Potential of Transformers in Time Series Forecasting*](https://arxiv.org/pdf/2402.10198) <d-cite key="mairal2016endtoend"></d-cite>, one of Ambroise's recent paper. SAMformer combines Sharpness-Aware Minimization (SAM) <d-cite key="mairal2016endtoend"></d-cite> and channel-wise attention to obtain a light-weight SOTA model with improved robustness and signal propagation compared to its competitors. This blog aims to provide a high-level view of the motivation behind SAMformer while explaining how to implement it. We invite the reader to read the original paper for more details.
 
 ## Motivation 🔎
-Time series forecasting consists of analyzing time series data to predict future trends based on historical information. It has many applications in real-world scenarios such as forecasting ECG recording to anticipate cardiac arrhythmia, predicting electricity consumption to match future demand, or predicting stock market prices (a particularly interesting topic in times of inflation). Multivariate long-term forecasting is notoriously challenging due to feature correlations and long-term temporal dependencies in time series
-
+Time series forecasting consists of analyzing time series data to predict future trends based on historical information. It has many applications in real-world scenarios such as forecasting ECG recordings to anticipate cardiac arrhythmia, predicting electricity consumption to match future demand, or predicting stock market prices (an exciting topic in times of inflation). Multivariate long-term forecasting is notoriously challenging due to feature correlations and long-term temporal dependencies in time series.
 
 ### Failure of Transformers
+
 ### Trainability Issues of the Attention
 
 ## SAMformer ⚔️
