@@ -15,7 +15,7 @@ authors:
   - name: Oussama Zekri
     url: "https://oussamazekri.fr"
     affiliations:
-      name: ENS Paris-Saclay & Imperial
+      name: ENS Paris-Saclay & Imperial College
 
 bibliography: 2024-10-11-samformer.bib
 
@@ -103,7 +103,7 @@ The original implementation of the SAMformer architecture makes use of modern de
 ### Main Components
 As can be seen below, SAMformer consists of 5 layers:
 
-{% include figure.liquid path="assets/img/blog_samformer/samformer_arch.png" class="img-fluid rounded z-depth-0" zoomable=true style="width: 50%;" %}
+{% include figure.liquid path="assets/img/blog_samformer/samformer_arch.png" class="img-fluid rounded z-depth-0" zoomable=true style="transform: scale(0.5); display: inline-block;" %}
 
 It leads to a shallow transformer with a single head and a single encoder that can be trained with SAM <d-cite key="mairal2016endtoend"></d-cite>. 
 
