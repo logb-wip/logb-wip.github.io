@@ -66,7 +66,7 @@ In this blog post, we focus on ***SAMformer***, a transformer-based architecture
 4) Possible solution: sigma reparam or SAM
 5) SAM works --> putting evertyhing together
 
-Traditional transformer models for time series forecasting are often complex and large, making it difficult to pinpoint and address their weaknesses. SAMformer addresses this by streamlining the architecture to include only essential components, enhancing simplicity without compromising performance. We identified trainability issues during this simplification and tackled them using Sharpness-Aware Minimization (SAM), which proved highly effective. By integrating SAM with channel-wise attention, SAMformer achieves state-of-the-art performance with a lightweight and robust design, making it a superior choice for time series forecasting.
+Proposition : Traditional transformer models for time series forecasting are often complex and large, making it difficult to pinpoint and address their weaknesses. SAMformer addresses this by streamlining the architecture to include only essential components, enhancing simplicity without compromising performance. Trainability issues are identified during this simplification and are tackled using Sharpness-Aware Minimization (SAM), which proved highly effective. By integrating SAM with channel-wise attention, SAMformer achieves state-of-the-art performance with a lightweight and robust design, making it a superior choice for time series forecasting.
 
 ## Motivation 🔎
 "On va droit au but, allez voir le papier pour plus de detail." (TO DO, something like "We'll keep it concise, refer to the paper for more details."). 
