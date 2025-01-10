@@ -77,7 +77,7 @@ Time series forecasting consists of analyzing time series data to predict future
 ## SAMformer ⚔️
 
 ### Trainability Issues of the Attention
-To identify the problem, we simplify the original Transformer [Vaswani et al.] to only keep the key components.
+To identify the problem, we simplify the original Transformer <d-cite key="vaswani2017"></d-cite> to only keep the key components.
 
 {% include figure.liquid path="assets/img/blog_samformer/sharpness_entropy_collapse_sam.png" class="img-fluid rounded z-depth-0" zoomable=true %}
 
