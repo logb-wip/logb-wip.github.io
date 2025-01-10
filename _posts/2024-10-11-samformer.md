@@ -85,7 +85,7 @@ There are two possible solutions:
 - $\sigma$-reparam (ref):
 - SAM (ref):
 
-fig: intro_fig_icml
+{% include figure.liquid path="assets/img/blog_samformer/toy_exp_losses_val_all_methods.png" class="img-fluid rounded z-depth-0" zoomable=true %}
 
 ### Putting Everything Together
 Now it works on our toy example: congrats you can now solve linear regression tasks. Hum, what about true time series data? We are only one step away from the optimal architecture: add revin
