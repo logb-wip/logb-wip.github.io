@@ -69,7 +69,7 @@ In this blog post, we focus on ***SAMformer***, a transformer-based architecture
 Traditional transformer models for time series forecasting are often complex and large, making it difficult to pinpoint and address their weaknesses. SAMformer addresses this by streamlining the architecture to include only essential components, enhancing simplicity without compromising performance. We identified trainability issues during this simplification and tackled them using Sharpness-Aware Minimization (SAM), which proved highly effective. By integrating SAM with channel-wise attention, SAMformer achieves state-of-the-art performance with a lightweight and robust design, making it a superior choice for time series forecasting.
 
 ## Motivation 🔎
-"On va droit au but, allez voir le papier pour plus de detail." (TO DO). 
+"On va droit au but, allez voir le papier pour plus de detail." (TO DO, something like "We'll keep it concise, refer to the paper for more details."). 
 Time series forecasting consists of analyzing time series data to predict future trends based on historical information. It has many applications in real-world scenarios such as forecasting ECG recordings to anticipate cardiac arrhythmia, predicting electricity consumption to match future demand, or predicting stock market prices (an exciting topic in times of inflation). Multivariate long-term forecasting is notoriously challenging due to feature correlations and long-term temporal dependencies in time series. And transformers fail at it [are transformers really effective bla bla] <d-cite key="zeng2022transformerseffectivetimeseries"></d-cite>.
 
 {% include figure.liquid path="assets/img/blog_samformer/meme_dogs.png" class="img-fluid rounded z-depth-0" zoomable=true %}
