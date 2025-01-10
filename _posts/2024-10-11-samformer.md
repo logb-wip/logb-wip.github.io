@@ -58,7 +58,7 @@ _styles: >
 ## <a id="goal"></a>Goal 🚀
 > Fear not, those who delved into the maths of the kernel trick, for its advent in deep learning is coming.
 
-In this blog post, we focus on ***SAMformer***, a transformer-based architecture for time series forecasting proposed in [*SAMformer: Unlocking the Potential of Transformers in Time Series Forecasting*](https://arxiv.org/pdf/2402.10198) <d-cite key="mairal2016endtoend"></d-cite>, one of Ambroise's recent paper. SAMformer combines Sharpness-Aware Minimization (SAM) <d-cite key="mairal2016endtoend"></d-cite> and channel-wise attention to obtain a light-weight SOTA model with improved robustness and signal propagation compared to its competitors. This blog aims to provide a high-level view of the motivation behind SAMformer while explaining how to implement it. For the reader interested in more mathematical details or to get started with SAMformer, the paper is on [arXiv](https://arxiv.org/pdf/2402.10198), and the code can be found on [github](https://github.com/romilbert/samformer).
+In this blog post, we focus on ***SAMformer***, a transformer-based architecture for time series forecasting proposed in [*SAMformer: Unlocking the Potential of Transformers in Time Series Forecasting*](https://arxiv.org/pdf/2402.10198) <d-cite key="pmlr-v235-ilbert24a"></d-cite>, one of Ambroise's recent paper. SAMformer combines Sharpness-Aware Minimization (SAM) <d-cite key="foret2021sharpnessaware"></d-cite> and channel-wise attention to obtain a light-weight SOTA model with improved robustness and signal propagation compared to its competitors. This blog aims to provide a high-level view of the motivation behind SAMformer while explaining how to implement it. For the reader interested in more mathematical details or to get started with SAMformer, the paper is on [arXiv](https://arxiv.org/pdf/2402.10198), and the code can be found on [github](https://github.com/romilbert/samformer).
 
 1) Problem: transformers nuls en TS forecasting + very complicated and large-scale models --> hard to identify the failure.
 2) We simplify transformer to only keep the key components
@@ -68,7 +68,7 @@ In this blog post, we focus on ***SAMformer***, a transformer-based architecture
 
 ## Motivation 🔎
 "On va droit au but, allez voir le papier pour plus de detail." (TO DO). 
-Time series forecasting consists of analyzing time series data to predict future trends based on historical information. It has many applications in real-world scenarios such as forecasting ECG recordings to anticipate cardiac arrhythmia, predicting electricity consumption to match future demand, or predicting stock market prices (an exciting topic in times of inflation). Multivariate long-term forecasting is notoriously challenging due to feature correlations and long-term temporal dependencies in time series. And transformers fail at it [are transformers really effective bla bla].
+Time series forecasting consists of analyzing time series data to predict future trends based on historical information. It has many applications in real-world scenarios such as forecasting ECG recordings to anticipate cardiac arrhythmia, predicting electricity consumption to match future demand, or predicting stock market prices (an exciting topic in times of inflation). Multivariate long-term forecasting is notoriously challenging due to feature correlations and long-term temporal dependencies in time series. And transformers fail at it [are transformers really effective bla bla] <d-cite key="zeng2022transformerseffectivetimeseries"></d-cite>.
 
 {% include figure.liquid path="assets/img/blog_samformer/meme_dogs.png" class="img-fluid rounded z-depth-0" zoomable=true %}
 
@@ -82,13 +82,13 @@ To identify the problem, we simplify the original Transformer [Vaswani et al.] t
 
 ### SAM to the rescue
 There are two possible solutions:
-- $\sigma$-reparam (ref):
-- SAM (ref):
+- $\sigma$-reparam <d-cite key="zhai2023sigmareparam"></d-cite>:
+- SAM <d-cite key="foret2021sharpnessaware"></d-cite>:
 
 {% include figure.liquid path="assets/img/blog_samformer/toy_exp_losses_val_all_methods.png" class="img-fluid rounded z-depth-0" zoomable=true %}
 
 ### Putting Everything Together
-Now it works on our toy example: congrats you can now solve linear regression tasks. Hum, what about true time series data? We are only one step away from the optimal architecture: add revin
+Now it works on our toy example: congrats you can now solve linear regression tasks. Hum, what about true time series data? We are only one step away from the optimal architecture: add revin <d-cite key="kim2022reversible"></d-cite>
 
 In the end, SAMformer consists of 5 layers: RevIN normalization, channel-wise attention, residual connection, linear forecasting, and RevIN denormalization. And we are SOTA: 
 
@@ -105,7 +105,7 @@ As can be seen below, SAMformer consists of 5 layers:
 
 {% include figure.liquid path="assets/img/blog_samformer/samformer_arch.png" class="img-fluid rounded z-depth-0" zoomable=true %}
 
-It leads to a shallow transformer with a single head and a single encoder that can be trained with SAM <d-cite key="mairal2016endtoend"></d-cite>. 
+It leads to a shallow transformer with a single head and a single encoder that can be trained with SAM <d-cite key="foret2021sharpnessaware"></d-cite>. 
 
 We provide a snippet of SAMformer (few) code lines below for the interested reader. 
 
@@ -150,7 +150,7 @@ class SAMFormerArchitecture(nn.Module):
 {% enddetails%}
 
 ## Future Work
-Sigma reparam bla bla (citer Sinkformer + rank and signal propagation work on attention (attention is not all u need + signal propagation in transformer).
+Sigma reparam bla bla (citer Sinkformer <d-cite key="pmlr-v151-sander22a"></d-cite> + rank and signal propagation work on attention (attention is not all u need + signal propagation in transformer).
 
 {% include figure.liquid path="assets/img/blog_samformer/nuclear_norm.png" class="img-fluid rounded z-depth-0" zoomable=true %}
 
