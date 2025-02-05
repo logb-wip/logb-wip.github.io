@@ -1,6 +1,6 @@
 ---
 layout: distill
-title: SAMformer: Efficient Time Series Forecasting with Transformers
+title: SAMformer - Efficient Time Series Forecasting with Transformers
 description: Improved attention and optimization for better performance
 tags: [transformers, deep learning, time series forecasting, maths, code]
 giscus_comments: true
