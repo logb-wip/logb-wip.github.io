@@ -152,11 +152,9 @@ class SAMFormerArchitecture(nn.Module):
 ## Future Work
 While studying the trainability issues of the Transformer, we stumbled over the fact that the entropy collapse appeared in tandem with a sharp loss. However, we observed that the entropy collapse was benign, i.e., solving it did not improve the performance that much. This is different from the conclusions on text and images found in []. Moreover, we saw that using $\sigma$-reparam[] decreases the signal propagation a lot, up to the point of having almost uniform attention. This leads to rank collapse which is known to appear in attention-based models and to impact the generalization performance []. Finally, we manage to demonstrate that, indeed, $\sigma$-reparam induces a rank collapse. Formally, $\sigma$-reparam aims to minimize blabla, which in turn can be used to upper-bound the rank of the attention internal computations. We have
 
-$$\lVert \mathbf{X}\mathbf{W}_Q\mathbf{W}_K^\top\mathbf{X}^\top\rVert _* \leq \lVert\mathbf{W}_Q\mathbf{W}_K^\top\rVert_2  \lVert\mathbf{X}\rVert _\mathrm{F}^2.$$
+{% include figure.liquid path="assets/img/blog_samformer/nuclear_norm.png" class="img-fluid rounded z-depth-0" zoomable=true %}
 
 Sigma reparam bla bla (citer Sinkformer <d-cite key="sander2022sinkformer"></d-cite> + rank and signal propagation work on attention (attention is not all u need + signal propagation in transformer).
-
-{% include figure.liquid path="assets/img/blog_samformer/nuclear_norm.png" class="img-fluid rounded z-depth-0" zoomable=true %}
 
 ## Conclusion
 
