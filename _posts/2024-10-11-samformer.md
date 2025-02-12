@@ -11,7 +11,7 @@ authors:
   - name: Ambroise Odonnat
     url: "https://ambroiseodt.github.io/"
     affiliations:
-      name: Noah's Ark Lab & Inria
+      name: Noah's Ark Lab, Inria
   - name: Oussama Zekri
     url: "https://oussamazekri.fr"
     affiliations:
@@ -57,7 +57,7 @@ _styles: >
 ## <a id="goal"></a>Goal 🚀
 > When a rigorous scientific method leads to an efficient implementation.
 
-In this blog post, we focus on **SAMformer***, one of Ambroise's recent works on transformers for time series forecasting. Proposed in [*SAMformer: Unlocking the Potential of Transformers in Time Series Forecasting*](https://arxiv.org/pdf/2402.10198) <d-cite key="ilbert2024samformer"></d-cite>, SAMformer combines Sharpness-Aware Minimization (SAM) <d-cite key="foret2021sharpnessaware"></d-cite> and channel-wise attention to obtain a light-weight SOTA model with improved robustness and signal propagation compared to its competitors. This blog aims to provide a high-level view of the motivation behind SAMformer while explaining how to implement it. For the reader interested in more mathematical details or to play with SAMformer, the paper is on [arXiv](https://arxiv.org/pdf/2402.10198), and the code can be found on [github](https://github.com/romilbert/samformer).
+In this blog post, we focus on **SAMformer**, introduced in one of Ambroise's recent works: [*SAMformer: Unlocking the Potential of Transformers in Time Series Forecasting*](https://arxiv.org/pdf/2402.10198) <d-cite key="ilbert2024samformer"></d-cite>. SAMformer combines Sharpness-Aware Minimization (SAM) <d-cite key="foret2021sharpnessaware"></d-cite> and channel-wise attention to obtain a light-weight SOTA model with improved robustness and signal propagation compared to its competitors. This blog aims to provide a high-level view of the motivation behind SAMformer while explaining how to implement it. For the reader interested in more details, the paper is on [arXiv](https://arxiv.org/pdf/2402.10198), and the code can be found on [github](https://github.com/romilbert/samformer).
 
 1) Problem: transformers nuls en TS forecasting + very complicated and large-scale models --> hard to identify the failure.
 2) We simplify transformer to only keep the key components
@@ -98,10 +98,7 @@ In the end, SAMformer consists of 5 layers: RevIN normalization, channel-wise at
 fig: add table and/or result figure (e.g. generalization plots with stars).
 
 ## Getting your hands dirty 🖥️
-In this section, we discuss the implementation of SAMformer. 
-
-### Overview
-The original implementation of the SAMformer architecture makes use of modern deep learning frameworks such as `PyTorch` or `TensorFlow` and can be found [here](https://github.com/romilbert/samformer).
+In this section, we discuss the implementation of SAMformer which makes use of modern deep learning frameworks such as `PyTorch` or `TensorFlow` and can be found [here](https://github.com/romilbert/samformer).
 
 ### Main Components
 As can be seen below, SAMformer consists of 5 layers:
@@ -153,12 +150,17 @@ class SAMFormerArchitecture(nn.Module):
 {% enddetails%}
 
 ## Future Work
+While studying the trainability issues of the Transformer, we stumbled over the fact that the entropy collapse appeared in tandem with a sharp loss. However, we observed that the entropy collapse was benign, i.e., solving it did not improve the performance that much. This is different from the conclusions on text and images found in []. Moreover, we saw that using $\sigma$-reparam[] decreases the signal propagation a lot, up to the point of having almost uniform attention. This leads to rank collapse which is known to appear in attention-based models and to impact the generalization performance []. Finally, we manage to demonstrate that, indeed, $\sigma$-reparam induces a rank collapse. Formally, $\sigma$-reparam aims to minimize blabla, which in turn can be used to upper-bound the rank of the attention internal computations. We have
+
+$$\lVert \mathbf{X}\mathbf{W}_Q\mathbf{W}_K^\top\mathbf{X}^\top\rVert _* \leq \lVert\mathbf{W}_Q\mathbf{W}_K^\top\rVert_2  \lVert\mathbf{X}\rVert _\mathrm{F}^2.$$
+
 Sigma reparam bla bla (citer Sinkformer <d-cite key="sander2022sinkformer"></d-cite> + rank and signal propagation work on attention (attention is not all u need + signal propagation in transformer).
 
 {% include figure.liquid path="assets/img/blog_samformer/nuclear_norm.png" class="img-fluid rounded z-depth-0" zoomable=true %}
 
 ## Conclusion
+
 ## <a id="acknowledgments"></a>Acknowledgments 🙏🏾
-We thank TBD for taking the time to proofread this blog post. SAMformer <d-cite key="ilbert2024samformer"></d-cite> is the first published paper of Ambroise's thesis on transformers and distribution shifts. He thanks all his co-authors and particularly his supervisor, Ievgen Redko, for the advice, trust, and freedom he provided during this project.
+We thank TBD for taking the time to proofread this blog post. SAMformer <d-cite key="ilbert2024samformer"></d-cite> is the first published paper of Ambroise's thesis and he thanks all his co-authors and particularly his supervisor, Ievgen Redko, for the freedom and trust he provided during this project.
 
 For any further questions, please feel free to leave a comment or contact us by mail!
