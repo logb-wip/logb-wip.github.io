@@ -55,7 +55,7 @@ _styles: >
 ---
 
 ## <a id="goal"></a>Goal 🚀
-> When a rigorous scientific method leads to an efficient implementation.
+> When the scientific method leads to an efficient implementation.
 
 In this blog post, we focus on **SAMformer**, introduced in one of Ambroise's recent works: [*SAMformer: Unlocking the Potential of Transformers in Time Series Forecasting*](https://arxiv.org/pdf/2402.10198) <d-cite key="ilbert2024samformer"></d-cite>. SAMformer combines Sharpness-Aware Minimization (SAM) <d-cite key="foret2021sharpnessaware"></d-cite> and channel-wise attention to obtain a light-weight SOTA model with improved robustness and signal propagation compared to its competitors. This blog aims to provide a high-level view of the motivation behind SAMformer while explaining how to implement it. For the reader interested in more details, the paper is on [arXiv](https://arxiv.org/pdf/2402.10198), and the code can be found on [github](https://github.com/romilbert/samformer).
 
@@ -150,7 +150,7 @@ class SAMFormerArchitecture(nn.Module):
 {% enddetails%}
 
 ## Future Work
-While studying the trainability issues of the Transformer, we stumbled over the fact that the entropy collapse appeared in tandem with a sharp loss. However, we observed that the entropy collapse was benign, i.e., solving it did not improve the performance that much. This is different from the conclusions on text and images found in []. Moreover, we saw that using $\sigma$-reparam[] decreases the signal propagation a lot, up to the point of having almost uniform attention. This leads to rank collapse which is known to appear in attention-based models and to impact the generalization performance []. Finally, we manage to demonstrate that, indeed, $\sigma$-reparam induces a rank collapse. Formally, $\sigma$-reparam aims to minimize blabla, which in turn can be used to upper-bound the rank of the attention internal computations. We have
+While studying the trainability issues of the Transformer, we stumbled over the fact that the entropy collapse appeared in tandem with a sharp loss. However, we observed that the entropy collapse was benign, i.e., solving it did not improve the performance that much. This is different from the conclusions on text and images found in <d-cite key="zhai2023sigmareparam"></d-cite>. Moreover, we saw that using $\sigma$-reparam <d-cite key="zhai2023sigmareparam"></d-cite> decreases the signal propagation a lot, up to the point of having almost uniform attention. This leads to rank collapse which is known to appear in attention-based models and to impact the generalization performance <d-cite key="anagnostidis2022signal"></d-cite> <d-cite key="dong2021attentionrank"></d-cite>. Finally, we manage to demonstrate that, indeed, $\sigma$-reparam induces a rank collapse. Formally, $\sigma$-reparam aims to minimize blabla, which in turn can be used to upper-bound the rank of the attention internal computations. We have
 
 {% include figure.liquid path="assets/img/blog_samformer/nuclear_norm.png" class="img-fluid rounded z-depth-0" zoomable=true %}
 
