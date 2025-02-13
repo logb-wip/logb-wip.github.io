@@ -67,31 +67,24 @@ In this blog post, we focus on **SAMformer** proposed in [*SAMformer: Unlocking 
 6) "On va droit au but, allez voir le papier pour plus de detail." (TO DO, something like "We'll keep it concise, refer to the paper for more details."). 
 
 ## Motivation 🔎
-Time series forecasting has many applications in real-world scenarios, e.g., anticipating cardiac arrhythmia in ECG signals, predicting electricity consumption to match future demand, or forecasting stock market prices (an exciting topic in times of inflation). This is notoriously challenging, especially in multivariate and long-term settings, due to feature correlations and long-term temporal dependencies in time series. Since transformers are tailored to sequential data and given their impressive success in NLP <d-cite key="brown2020fewshot"></d-cite> and computer vision <d-cite key="foret2021sharpnessaware"></d-cite>, many recent variants of the original implementation have been proposed, with sparse attention to decrease the $N^2$ dependency or decomposition schemes to deal with the temporal dependencies. This led to a wide range of complex models with many parameters. However, it has been shown that linear models perform better than those SOTA Anything-formers <d-cite key="zeng2022transformerseffectivetimeseries"></d-cite>. This came as a surprise to us given the success of the Transformer architecture with other data modalities and motivated our study right up to the development of SAMformer.
+Time series forecasting has many applications in real-world scenarios, e.g., anticipating cardiac arrhythmia in ECG signals, predicting electricity consumption to match future demand, or forecasting stock market prices (an exciting topic in times of inflation). This is notoriously challenging, especially in multivariate and long-term settings, due to feature correlations and long-term temporal dependencies in time series. Given its success on sequential data, many variants of the original transformer have been proposed, with computationally more efficient attention layers or well-engineered decomposition schemes to deal with the temporal dependencies. This led to a wide range of complex models with many parameters. However, it has been shown that linear models perform better than those SOTA Anything-formers <d-cite key="zeng2022transformerseffectivetimeseries"></d-cite>. This came as a surprise to us given the success of the Transformer architecture in NLP <d-cite key="brown2020fewshot"></d-cite> and Computer Vision <d-cite key="foret2021sharpnessaware"></d-cite> our study right up to the development of SAMformer.
 
-{% include figure.liquid path="assets/img/blog_samformer/meme_dogs.png" class="img-fluid rounded z-depth-0" zoomable=true %}
+{% include figure.liquid path="assets/img/blog_samformer/dog_meme.PNG" class="img-fluid rounded z-depth-0" zoomable=true %}
 
 ## SAMformer ⚔️
-We detail below the process that led to the SAMformer.
-This motivated our study. 
-
-Proposition : Traditional transformer models for time series forecasting are often complex and large, making it difficult to pinpoint and address their weaknesses. SAMformer addresses this by streamlining the architecture to include only essential components, enhancing simplicity without compromising performance. Trainability issues are identified during this simplification and are tackled using Sharpness-Aware Minimization (SAM), which proved highly effective. By integrating SAM with channel-wise attention, SAMformer achieves state-of-the-art performance with a lightweight and robust design, making it a superior choice for time series forecasting.
-
-## Simplified Setting
-The Anything-formers are often complex and large, making it difficult to pinpoint and address their weaknesses. To better understand what causes the low performance of those models, we  first simplify the transformer to only keep its key components. Given that linear models outperformed more complex transformer ones, we naturally considered a toy problem of linear regression. The question is whether a simple transformer *tailored* to solve this task manage to do it, at least as well as a linear model.
+The process that led to SAMformer is akin to the good old-fashioned scientific method: controlled setting --> empirical observations --> hypothesis --> validation.
 
 ### Trainability Issues of the Attention
-To identify the problem, we simplify the original Transformer <d-cite key="vaswani2017"></d-cite> to only keep the key components.
+The Anything-formers are often complex and large, making pinpointing and addressing their weaknesses difficult. To identify the problem, we simplify the original Transformer <d-cite key="vaswani2017"></d-cite> to only keep the key components. Given that linear models outperformed more complex transformer ones, we naturally considered a toy problem of linear regression. The question is whether a simple transformer *tailored* to solve this task manages to do it, at least as well as a linear model.
 
-{% include figure.liquid path="assets/img/blog_samformer/sharpness_entropy_collapse_sam.png" class="img-fluid rounded z-depth-0" zoomable=true %}
-
+{% include figure.liquid path="assets/img/blog_samformer/sharpness_entropy_collapse_sam.pdf" class="img-fluid rounded z-depth-0" zoomable=true %}
 
 ### SAM to the rescue
 There are two possible solutions:
 - $\sigma$-reparam <d-cite key="zhai2023sigmareparam"></d-cite>:
 - SAM <d-cite key="foret2021sharpnessaware"></d-cite>:
 
-{% include figure.liquid path="assets/img/blog_samformer/toy_exp_losses_val_all_methods.png" class="img-fluid rounded z-depth-0" zoomable=true %}
+{% include figure.liquid path="assets/img/blog_samformer/toy_exp_losses_val_all_methods_yaxis_modif.pdf" class="img-fluid rounded z-depth-0" zoomable=true %}
 
 ### Putting Everything Together
 Now it works on our toy example: congrats you can now solve linear regression tasks. Hum, what about true time series data? We are only one step away from the optimal architecture: add revin <d-cite key="kim2022reversible"></d-cite>
@@ -99,6 +92,7 @@ Now it works on our toy example: congrats you can now solve linear regression ta
 In the end, SAMformer consists of 5 layers: RevIN normalization, channel-wise attention, residual connection, linear forecasting, and RevIN denormalization. And we are SOTA: 
 
 fig: add table and/or result figure (e.g. generalization plots with stars).
+
 
 ## Getting your hands dirty 🖥️
 In this section, we discuss the implementation of SAMformer which makes use of modern deep learning frameworks such as `PyTorch` or `TensorFlow` and can be found [here](https://github.com/romilbert/samformer).
@@ -162,7 +156,7 @@ Sigma reparam bla bla (citer Sinkformer <d-cite key="sander2022sinkformer"></d-c
 ## Conclusion
 This blog post has presented Ambroise's recent work on transformers for time series forecasting. By integrating SAM with channel-wise attention, SAMformer achieves state-of-the-art performance with a lightweight and robust design, making it a superior choice for time series forecasting. While there are many models and now foundation models for time series forecasting, SAMformer has the benefit of simplicity and efficiency. Beyond the model itself, we felt it was important to share the research process that led to it in a world of rapid changes and extreme development of algorithms that are performance-oriented. While SAMformer outperforms SOTA models (at the time) for a fraction of the computational cost, our goal was primarily to better understand the failure modes by rigorous analysis. We hope this kind of methodology can inspire researchers and practitioners towards more efficient and reliable methods. 
 
-Finally, we felt the need to recall in these troubled times the necessity of open-minded and open-source research for the community. In particular, this work would not have been possible without access to the code and papers of SAM[], $\sigma$-reparam[] or machine learning libraries such as PyTorch, TensorFlow, or Scikit-Learn. For the reader interested in more mathematical details or getting started with SAMformer, the paper is on [arXiv](https://arxiv.org/pdf/2402.10198), and the code can be found on [github](https://github.com/romilbert/samformer).
+Finally, we want to acknowledge and thank the open-source community. In particular, this work would not have been possible without access to the code and papers of SAM[], $\sigma$-reparam[] or to the machine learning libraries such as PyTorch, TensorFlow, or Scikit-Learn. For the reader interested in more mathematical details or getting started with SAMformer, the paper is on [arXiv](https://arxiv.org/pdf/2402.10198), and the code can be found on [github](https://github.com/romilbert/samformer).
 
 ## <a id="acknowledgments"></a>Acknowledgments 🙏🏾
 We thank TBD for taking the time to proofread this blog post. SAMformer <d-cite key="ilbert2024samformer"></d-cite> is the first published paper of Ambroise's thesis and he thanks all his co-authors and particularly his supervisor, Ievgen Redko, for the freedom and trust he provided during this project.
