@@ -55,16 +55,9 @@ _styles: >
 ---
 
 ## <a id="goal"></a>Goal 🚀
-> When the scientific method leads to an efficient implementation.
+> When a simple analysis leads to an efficient implementation.
 
 In this blog post, we focus on **SAMformer** proposed in [*SAMformer: Unlocking the Potential of Transformers in Time Series Forecasting*](https://arxiv.org/pdf/2402.10198) <d-cite key="ilbert2024samformer"></d-cite>. SAMformer combines Sharpness-Aware Minimization (SAM) <d-cite key="foret2021sharpnessaware"></d-cite> and channel-wise attention to obtain a light-weight SOTA model with improved robustness and signal propagation compared to its competitors. This blog aims to provide a high-level view of the motivation behind SAMformer while explaining how to implement it. For the reader interested in more details, the paper is on [arXiv](https://arxiv.org/pdf/2402.10198), and the code can be found on [github](https://github.com/romilbert/samformer).
-
-1) Problem: transformers nuls en TS forecasting + very complicated and large-scale models --> hard to identify the failure.
-2) We simplify transformer to only keep the key components
-3) Problem identification: trainability issues
-4) Possible solution: sigma reparam or SAM
-5) SAM works --> putting evertyhing together
-6) "On va droit au but, allez voir le papier pour plus de detail." (TO DO, something like "We'll keep it concise, refer to the paper for more details."). 
 
 ## Motivation 🔎
 Time series forecasting has many applications in real-world scenarios, e.g., anticipating cardiac arrhythmia in ECG signals, predicting electricity consumption to match future demand, or forecasting stock market prices (an exciting topic in times of inflation). This is notoriously challenging, especially in multivariate and long-term settings, due to feature correlations and long-term temporal dependencies in time series. Given its success on sequential data, many variants of the original transformer have been proposed, with computationally more efficient attention layers or well-engineered decomposition schemes to deal with the temporal dependencies. This led to a wide range of complex models with many parameters. However, it has been shown that linear models perform better than those SOTA Anything-formers <d-cite key="zeng2022transformerseffectivetimeseries"></d-cite>. This came as a surprise to us given the success of the Transformer architecture in NLP <d-cite key="brown2020fewshot"></d-cite> and Computer Vision <d-cite key="foret2021sharpnessaware"></d-cite> our study right up to the development of SAMformer.
@@ -72,7 +65,14 @@ Time series forecasting has many applications in real-world scenarios, e.g., ant
 {% include figure.liquid path="assets/img/blog_samformer/dog_meme.PNG" class="img-fluid rounded z-depth-0" zoomable=true %}
 
 ## SAMformer ⚔️
-The process that led to SAMformer is akin to the good old-fashioned scientific method: controlled setting --> empirical observations --> hypothesis --> validation.
+The process that led to SAMformer is akin to the good old-fashioned scientific method: empirical observations $\rightarrow$ hypothesis $\rightarrow$ experimental validation.
+
+1) Problem: transformers nuls en TS forecasting + very complicated and large-scale models --> hard to identify the failure.
+2) We simplify transformer to only keep the key components
+3) Problem identification: trainability issues
+4) Possible solution: sigma reparam or SAM
+5) SAM works --> putting evertyhing together
+6) "On va droit au but, allez voir le papier pour plus de detail." (TO DO, something like "We'll keep it concise, refer to the paper for more details.").
 
 ### Trainability Issues of the Attention
 The Anything-formers are often complex and large, making pinpointing and addressing their weaknesses difficult. To identify the problem, we simplify the original Transformer <d-cite key="vaswani2017"></d-cite> to only keep the key components. Given that linear models outperformed more complex transformer ones, we naturally considered a toy problem of linear regression. The question is whether a simple transformer *tailored* to solve this task manages to do it, at least as well as a linear model.
@@ -147,18 +147,18 @@ class SAMFormerArchitecture(nn.Module):
 {% enddetails%}
 
 ## Future Work
-While studying the trainability issues of the Transformer, we stumbled over the fact that the entropy collapse appeared in tandem with a sharp loss. However, we observed that the entropy collapse was benign, i.e., solving it did not improve the performance that much. This is different from the conclusions on text and images found in <d-cite key="zhai2023sigmareparam"></d-cite>. Moreover, we saw that using $\sigma$-reparam <d-cite key="zhai2023sigmareparam"></d-cite> decreases the signal propagation a lot, up to the point of having almost uniform attention. This leads to rank collapse which is known to appear in attention-based models and to impact the generalization performance <d-cite key="anagnostidis2022signal"></d-cite> <d-cite key="dong2021attentionrank"></d-cite>. Finally, we manage to demonstrate that, indeed, $\sigma$-reparam induces a rank collapse. Formally, $\sigma$-reparam aims to minimize blabla, which in turn can be used to upper-bound the rank of the attention internal computations. We have
+While studying the trainability issues of the Transformer, we stumbled over the fact that the entropy collapse appeared in tandem with a sharp loss. However, we observed that the entropy collapse was benign, i.e., solving it did not improve the performance that much. This is different from the conclusions on text and images found in <d-cite key="zhai2023sigmareparam"></d-cite>. Moreover, we saw that using $\sigma$-reparam <d-cite key="zhai2023sigmareparam"></d-cite> decreases the signal propagation a lot, up to the point of having almost uniform attention. This leads to rank collapse, which is known to appear in attention-based models and to impact the generalization performance <d-cite key="anagnostidis2022signal"></d-cite> <d-cite key="dong2021attentionrank"></d-cite>. Finally, we manage to demonstrate that, indeed, $\sigma$-reparam induces a rank collapse. Formally, $\sigma$-reparam aims to minimize blabla, which in turn can be used to upper-bound the rank of the attention internal computations. We have
 
 {% include figure.liquid path="assets/img/blog_samformer/nuclear_norm.png" class="img-fluid rounded z-depth-0" zoomable=true %}
 
 Sigma reparam bla bla (citer Sinkformer <d-cite key="sander2022sinkformer"></d-cite> + rank and signal propagation work on attention (attention is not all u need + signal propagation in transformer).
 
 ## Conclusion
-This blog post has presented Ambroise's recent work on transformers for time series forecasting. By integrating SAM with channel-wise attention, SAMformer achieves state-of-the-art performance with a lightweight and robust design, making it a superior choice for time series forecasting. While there are many models and now foundation models for time series forecasting, SAMformer has the benefit of simplicity and efficiency. Beyond the model itself, we felt it was important to share the research process that led to it in a world of rapid changes and extreme development of algorithms that are performance-oriented. While SAMformer outperforms SOTA models (at the time) for a fraction of the computational cost, our goal was primarily to better understand the failure modes by rigorous analysis. We hope this kind of methodology can inspire researchers and practitioners towards more efficient and reliable methods. 
+This blog post has presented Ambroise's recent work on transformers for time series forecasting. By integrating SAM with channel-wise attention, SAMformer achieves state-of-the-art performance with a lightweight and robust design, making it a superior choice for time series forecasting. While there are many models and now foundation models for time series forecasting, SAMformer has the benefit of simplicity and efficiency. Beyond the model itself, we felt it was important to share the research process that led to it in a world of rapid changes and extreme development of algorithms that are performance-oriented. While SAMformer outperforms SOTA models (at the time) for a fraction of the computational cost, our goal was primarily to better understand the failure modes of previous methods. We hope this kind of methodology can inspire researchers and practitioners towards more efficient and reliable methods. 
 
 Finally, we want to acknowledge and thank the open-source community. In particular, this work would not have been possible without access to the code and papers of SAM[], $\sigma$-reparam[] or to the machine learning libraries such as PyTorch, TensorFlow, or Scikit-Learn. For the reader interested in more mathematical details or getting started with SAMformer, the paper is on [arXiv](https://arxiv.org/pdf/2402.10198), and the code can be found on [github](https://github.com/romilbert/samformer).
 
 ## <a id="acknowledgments"></a>Acknowledgments 🙏🏾
-We thank TBD for taking the time to proofread this blog post. SAMformer <d-cite key="ilbert2024samformer"></d-cite> is the first published paper of Ambroise's thesis and he thanks all his co-authors and particularly his supervisor, Ievgen Redko, for the freedom and trust he provided during this project.
+We thank TBD for taking the time to proofread this blog post. Ambroise thanks all his co-authors, without whom SAMformer <d-cite key="ilbert2024samformer"></d-cite> wouldn't exist, and in particular, his Ph.D. supervisor, Ievgen Redko, for the freedom and trust he provided during this project.
 
 For any further questions, please feel free to leave a comment or contact us by mail!
